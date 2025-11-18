@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:exercice_flutter/Models/Users.dart';
@@ -19,6 +18,19 @@ class allUsers {
       }
 
       return users;
+    } else {
+      throw HttpException("Oup's une erreur est survenue sur le serveur");
+    }
+  }
+
+  static Future<Users> getUserById(int id) async {
+    final Uri endpoint = Uri.parse('https://dummyjson.com/users/$id');
+
+    final response = await http.get(endpoint);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return Users(data['id'], data['firstName'], data['lastName']);
     } else {
       throw HttpException("Oup's une erreur est survenue sur le serveur");
     }

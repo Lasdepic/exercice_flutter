@@ -1,16 +1,17 @@
 import 'package:exercice_flutter/API/UsersAPI.dart';
-import 'package:exercice_flutter/pages/User.dart';
+import 'package:exercice_flutter/Models/Users.dart';
 import 'package:flutter/material.dart';
 
-class MyTeamA extends StatefulWidget {
-  MyTeamA({super.key});
+class UserPage extends StatefulWidget {
+  final int userId;
+  const UserPage({Key? key, required this.userId}) : super(key: key);
 
   @override
-  State<MyTeamA> createState() => _MyTeamAState();
+  State<UserPage> createState() => _UserPageState();
 }
 
-class _MyTeamAState extends State<MyTeamA> {
-  List teamA = [];
+class _UserPageState extends State<UserPage> {
+  Users? user;
   bool loading = true;
 
   @override
@@ -20,43 +21,44 @@ class _MyTeamAState extends State<MyTeamA> {
   }
 
   Future loadUser() async {
-    final user = await allUsers.getAllUsers();
+    final u = await allUsers.getUserById(widget.userId);
     setState(() {
-      teamA = user.take(10).toList();
+      user = u;
       loading = false;
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("NavBar"),
+        title: const Text('Profil'),
         backgroundColor: Colors.orangeAccent,
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 137, 159, 219),
               ),
-              child: Text("Menu"),
+              child: Text('Menu'),
             ),
             ListTile(
-              title: Text('Exercice Brian'),
+              title: const Text('Exercice Brian'),
               onTap: () {
                 Navigator.pushNamed(context, '/brian');
               },
             ),
             ListTile(
-              title: Text('Boucle page'),
+              title: const Text('Boucle page'),
               onTap: () {
                 Navigator.pushNamed(context, '/MaNewPage');
               },
             ),
             ListTile(
-              title: Text('My Score'),
+              title: const Text('My Score'),
               onTap: () {
                 Navigator.pushNamed(context, '/MyScore');
               },
@@ -65,27 +67,23 @@ class _MyTeamAState extends State<MyTeamA> {
         ),
       ),
       body: loading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Center(
-              child: ListView.builder(
-                itemCount: teamA.length,
-                itemBuilder: (context, index) {
-                  final user = teamA[index];
-                  return ListTile(
-                    title: Center(
-                      child: Text("${user.firstName} ${user.lastName}"),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserPage(userId: user.id),
+              child: user == null
+                  ? const Text('Aucun utilisateur trouvé')
+                  : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 12),
+                        Text(
+                          '${user!.firstName} ${user!.lastName}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
+                      ],
+                    ),
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -93,7 +91,7 @@ class _MyTeamAState extends State<MyTeamA> {
         },
         backgroundColor: Colors.orangeAccent,
         tooltip: 'Retour',
-        child: Icon(Icons.arrow_back),
+        child: const Icon(Icons.arrow_back),
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'dart:ffi';
-
+import 'package:exercice_flutter/pages/User.dart';
 import 'package:exercice_flutter/API/UsersAPI.dart';
 import 'package:flutter/material.dart';
 
@@ -76,6 +76,14 @@ class _MyTeamBState extends State<MyTeamB> {
                     title: Center(
                       child: Text("${user.firstName} ${user.lastName}"),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserPage(userId: user.id),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
