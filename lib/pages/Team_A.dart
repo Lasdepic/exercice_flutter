@@ -1,3 +1,4 @@
+import 'package:exercice_flutter/ViewModel/PlayerUser.dart';
 import 'package:exercice_flutter/pages/User.dart';
 import 'package:exercice_flutter/API/UsersAPI.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class MyTeamA extends StatefulWidget {
 }
 
 class _MyTeamAState extends State<MyTeamA> {
-  List teamB = [];
+  List teamA = [];
   bool loading = true;
 
   @override
@@ -20,9 +21,8 @@ class _MyTeamAState extends State<MyTeamA> {
   }
 
   Future loadUser() async {
-    final user = await allUsers.getAllUsers();
+    teamA = await PlayerUser().filterTeamA();
     setState(() {
-      teamB = user.skip(10).take(10).toList();
       loading = false;
     });
   }
@@ -68,9 +68,9 @@ class _MyTeamAState extends State<MyTeamA> {
           ? Center(child: CircularProgressIndicator())
           : Center(
               child: ListView.builder(
-                itemCount: teamB.length,
+                itemCount: teamA.length,
                 itemBuilder: (context, index) {
-                  final user = teamB[index];
+                  final user = teamA[index];
                   final initials =
                       "${(user.firstName ?? '').isNotEmpty ? user.firstName[0] : ''}${(user.lastName ?? '').isNotEmpty ? user.lastName[0] : ''}"
                           .toUpperCase();

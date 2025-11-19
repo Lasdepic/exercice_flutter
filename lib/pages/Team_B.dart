@@ -1,3 +1,4 @@
+import 'package:exercice_flutter/ViewModel/PlayerUser.dart';
 import 'package:exercice_flutter/pages/User.dart';
 import 'package:exercice_flutter/API/UsersAPI.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +21,8 @@ class _MyTeamBState extends State<MyTeamB> {
   }
 
   Future loadUser() async {
-    final user = await allUsers.getAllUsers();
+    teamB = await PlayerUser().filterTeamB();
     setState(() {
-      teamB = user.skip(10).take(10).toList();
       loading = false;
     });
   }
