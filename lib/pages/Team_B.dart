@@ -2,6 +2,7 @@ import 'package:exercice_flutter/ViewModel/PlayerUser.dart';
 import 'package:exercice_flutter/pages/User.dart';
 import 'package:exercice_flutter/API/UsersAPI.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyTeamB extends StatefulWidget {
   MyTeamB({super.key});
@@ -28,9 +29,10 @@ class _MyTeamBState extends State<MyTeamB> {
   }
 
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<PlayerUser>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("NavBar"),
+        title: Text("Team B"),
         backgroundColor: Colors.orangeAccent,
       ),
       drawer: Drawer(
@@ -64,13 +66,13 @@ class _MyTeamBState extends State<MyTeamB> {
           ],
         ),
       ),
-      body: loading
+      body: viewModel.loading
           ? Center(child: CircularProgressIndicator())
           : Center(
               child: ListView.builder(
-                itemCount: teamB.length,
+                itemCount: viewModel.team.length,
                 itemBuilder: (context, index) {
-                  final user = teamB[index];
+                  final user = viewModel.team[index];
                   final initials =
                       "${(user.firstName ?? '').isNotEmpty ? user.firstName[0] : ''}${(user.lastName ?? '').isNotEmpty ? user.lastName[0] : ''}"
                           .toUpperCase();

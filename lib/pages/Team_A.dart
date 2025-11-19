@@ -2,6 +2,7 @@ import 'package:exercice_flutter/ViewModel/PlayerUser.dart';
 import 'package:exercice_flutter/pages/User.dart';
 import 'package:exercice_flutter/API/UsersAPI.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyTeamA extends StatefulWidget {
   MyTeamA({super.key});
@@ -11,26 +12,11 @@ class MyTeamA extends StatefulWidget {
 }
 
 class _MyTeamAState extends State<MyTeamA> {
-  List teamA = [];
-  bool loading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    loadUser();
-  }
-
-  Future loadUser() async {
-    teamA = await PlayerUser().filterTeamA();
-    setState(() {
-      loading = false;
-    });
-  }
-
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<PlayerUser>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("NavBar"),
+        title: Text("Team A"),
         backgroundColor: Colors.orangeAccent,
       ),
       drawer: Drawer(
@@ -64,13 +50,13 @@ class _MyTeamAState extends State<MyTeamA> {
           ],
         ),
       ),
-      body: loading
+      body: viewModel.loading
           ? Center(child: CircularProgressIndicator())
           : Center(
               child: ListView.builder(
-                itemCount: teamA.length,
+                itemCount: viewModel.team.length,
                 itemBuilder: (context, index) {
-                  final user = teamA[index];
+                  final user = viewModel.team[index];
                   final initials =
                       "${(user.firstName ?? '').isNotEmpty ? user.firstName[0] : ''}${(user.lastName ?? '').isNotEmpty ? user.lastName[0] : ''}"
                           .toUpperCase();
