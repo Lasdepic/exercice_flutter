@@ -71,18 +71,32 @@ class _UserPageState extends State<UserPage> {
           : Center(
               child: user == null
                   ? const Text('Aucun utilisateur trouvé')
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(height: 12),
-                        Text(
-                          '${user!.firstName} ${user!.lastName}',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                  : Card(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 12),
+                          Image.network(user!.image, height: 100, width: 100),
+                          SizedBox(height: 12),
+                          Text(
+                            '${user!.firstName} ${user!.lastName}',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 8),
+                          Text(
+                            'Age : ${user!.age} ans',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Email : ${user!.email}',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
                     ),
             ),
       floatingActionButton: FloatingActionButton(

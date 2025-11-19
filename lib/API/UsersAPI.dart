@@ -14,7 +14,16 @@ class allUsers {
       final List<Users> users = [];
 
       for (var user in data["users"]) {
-        users.add(Users(user['id'], user['firstName'], user['lastName']));
+        users.add(
+          Users(
+            user['id'],
+            user['image'],
+            user['firstName'],
+            user['lastName'],
+            user['age'],
+            user['email'],
+          ),
+        );
       }
 
       return users;
@@ -30,7 +39,14 @@ class allUsers {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return Users(data['id'], data['firstName'], data['lastName']);
+      return Users(
+        data['id'],
+        data['image'],
+        data['firstName'],
+        data['lastName'],
+        data['age'],
+        data['email'],
+      );
     } else {
       throw HttpException("Oup's une erreur est survenue sur le serveur");
     }

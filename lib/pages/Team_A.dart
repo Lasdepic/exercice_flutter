@@ -1,5 +1,5 @@
-import 'package:exercice_flutter/API/UsersAPI.dart';
 import 'package:exercice_flutter/pages/User.dart';
+import 'package:exercice_flutter/API/UsersAPI.dart';
 import 'package:flutter/material.dart';
 
 class MyTeamA extends StatefulWidget {
@@ -10,7 +10,7 @@ class MyTeamA extends StatefulWidget {
 }
 
 class _MyTeamAState extends State<MyTeamA> {
-  List teamA = [];
+  List teamB = [];
   bool loading = true;
 
   @override
@@ -22,7 +22,7 @@ class _MyTeamAState extends State<MyTeamA> {
   Future loadUser() async {
     final user = await allUsers.getAllUsers();
     setState(() {
-      teamA = user.take(10).toList();
+      teamB = user.skip(10).take(10).toList();
       loading = false;
     });
   }
@@ -68,21 +68,40 @@ class _MyTeamAState extends State<MyTeamA> {
           ? Center(child: CircularProgressIndicator())
           : Center(
               child: ListView.builder(
-                itemCount: teamA.length,
+                itemCount: teamB.length,
                 itemBuilder: (context, index) {
-                  final user = teamA[index];
-                  return ListTile(
-                    title: Center(
-                      child: Text("${user.firstName} ${user.lastName}"),
+                  final user = teamB[index];
+                  final initials =
+                      "${(user.firstName ?? '').isNotEmpty ? user.firstName[0] : ''}${(user.lastName ?? '').isNotEmpty ? user.lastName[0] : ''}"
+                          .toUpperCase();
+                  return Card(
+                    margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: ListTile(
+                      leading:
+                          (user.image != null &&
+                              (user.image as String).isNotEmpty)
+                          ? CircleAvatar(
+                              backgroundImage: NetworkImage(user.image),
+                            )
+                          : CircleAvatar(
+                              backgroundColor: Colors.orangeAccent,
+                              child: Text(
+                                initials,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                      title: Text("${user.firstName} ${user.lastName}"),
+                      subtitle: Text(user.email),
+                      trailing: Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserPage(userId: user.id),
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserPage(userId: user.id),
-                        ),
-                      );
-                    },
                   );
                 },
               ),

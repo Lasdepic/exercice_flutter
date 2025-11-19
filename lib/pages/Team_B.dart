@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:exercice_flutter/pages/User.dart';
 import 'package:exercice_flutter/API/UsersAPI.dart';
 import 'package:flutter/material.dart';
@@ -72,18 +71,37 @@ class _MyTeamBState extends State<MyTeamB> {
                 itemCount: teamB.length,
                 itemBuilder: (context, index) {
                   final user = teamB[index];
-                  return ListTile(
-                    title: Center(
-                      child: Text("${user.firstName} ${user.lastName}"),
+                  final initials =
+                      "${(user.firstName ?? '').isNotEmpty ? user.firstName[0] : ''}${(user.lastName ?? '').isNotEmpty ? user.lastName[0] : ''}"
+                          .toUpperCase();
+                  return Card(
+                    margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: ListTile(
+                      leading:
+                          (user.image != null &&
+                              (user.image as String).isNotEmpty)
+                          ? CircleAvatar(
+                              backgroundImage: NetworkImage(user.image),
+                            )
+                          : CircleAvatar(
+                              backgroundColor: Colors.orangeAccent,
+                              child: Text(
+                                initials,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                      title: Text("${user.firstName} ${user.lastName}"),
+                      subtitle: Text(user.email),
+                      trailing: Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserPage(userId: user.id),
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserPage(userId: user.id),
-                        ),
-                      );
-                    },
                   );
                 },
               ),
