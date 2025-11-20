@@ -1,4 +1,6 @@
+import 'package:exercice_flutter/ViewModel/AddScore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyScore extends StatefulWidget {
   MyScore({super.key});
@@ -8,11 +10,9 @@ class MyScore extends StatefulWidget {
 }
 
 class _MyScoreState extends State<MyScore> {
-  int scoreA = 0;
-  int scoreB = 0;
-
   @override
   Widget build(BuildContext context) {
+    final addPoint = Provider.of<AddScore>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Shink woo Scheeeh"),
@@ -76,7 +76,7 @@ class _MyScoreState extends State<MyScore> {
                         SizedBox(height: 30),
                         Container(
                           child: Text(
-                            '$scoreA',
+                            '${addPoint.scoreA}',
                             style: TextStyle(
                               fontSize: 180,
                               fontWeight: FontWeight.bold,
@@ -86,9 +86,7 @@ class _MyScoreState extends State<MyScore> {
                         SizedBox(height: 12),
                         ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              scoreA += 1;
-                            });
+                            addPoint.addOnePointA(1);
                           },
                           child: Text('+1 point'),
                           style: ElevatedButton.styleFrom(
@@ -99,9 +97,7 @@ class _MyScoreState extends State<MyScore> {
                         SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              scoreA += 2;
-                            });
+                            addPoint.addOnePointA(2);
                           },
                           child: Text('+2 points'),
                           style: ElevatedButton.styleFrom(
@@ -112,9 +108,7 @@ class _MyScoreState extends State<MyScore> {
                         SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              scoreA += 3;
-                            });
+                            addPoint.addOnePointA(3);
                           },
                           child: Text('+3 points'),
                           style: ElevatedButton.styleFrom(
@@ -146,7 +140,7 @@ class _MyScoreState extends State<MyScore> {
                         SizedBox(height: 30),
                         Container(
                           child: Text(
-                            '$scoreB',
+                            '${addPoint.scoreB}',
                             style: TextStyle(
                               fontSize: 180,
                               fontWeight: FontWeight.bold,
@@ -156,9 +150,7 @@ class _MyScoreState extends State<MyScore> {
                         SizedBox(height: 12),
                         ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              scoreB += 1;
-                            });
+                            addPoint.addOnePointB(1);
                           },
                           child: Text('+1 point'),
                           style: ElevatedButton.styleFrom(
@@ -169,9 +161,7 @@ class _MyScoreState extends State<MyScore> {
                         SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              scoreB += 2;
-                            });
+                            addPoint.addOnePointB(2);
                           },
                           child: Text('+2 points'),
                           style: ElevatedButton.styleFrom(
@@ -182,9 +172,7 @@ class _MyScoreState extends State<MyScore> {
                         SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              scoreB += 3;
-                            });
+                            addPoint.addOnePointB(3);
                           },
                           child: Text('+3 points'),
                           style: ElevatedButton.styleFrom(
@@ -203,10 +191,7 @@ class _MyScoreState extends State<MyScore> {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                setState(() {
-                  scoreA = 0;
-                  scoreB = 0;
-                });
+                addPoint.reset();
               },
               child: Text('Réinitialiser'),
               style: ElevatedButton.styleFrom(
