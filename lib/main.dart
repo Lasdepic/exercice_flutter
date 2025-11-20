@@ -2,6 +2,7 @@ import 'package:exercice_flutter/ViewModel/AddScore.dart';
 import 'package:exercice_flutter/ViewModel/PlayerUser.dart';
 import 'package:exercice_flutter/pages/Brian.dart';
 import 'package:exercice_flutter/pages/FlexPage.dart';
+import 'package:exercice_flutter/pages/Mercato.dart';
 import 'package:exercice_flutter/pages/MyScore.dart';
 import 'package:exercice_flutter/pages/Team_A.dart';
 import 'package:exercice_flutter/pages/Team_B.dart';
@@ -17,17 +18,15 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => PlayerUser()..filterTeamA(),
-          lazy: true,
-        ),
-        ChangeNotifierProvider(
-          create: (_) => PlayerUser()..filterTeamB(),
+          create: (_) => PlayerUser()
+            ..filterTeamA()
+            ..filterTeamB()
+            ..mercatoPlayer(),
           lazy: true,
         ),
         ChangeNotifierProvider(create: (_) => AddScore()),
@@ -38,10 +37,11 @@ class MyApp extends StatelessWidget {
         routes: {
           '/brian': (context) => const MyPage(),
           '/MaNewPage': (context) => MaNewPage(),
-          '/MyScore': (context) => MyScore(),
           '/Team_A': (context) => MyTeamA(),
           '/Team_B': (context) => MyTeamB(),
-          '/': (context) => const FlexPage(),
+          '/Mercato': (context) => MercatoPage(),
+          '/MyScore': (context) => MyScore(),
+          '/': (context) => MyScore(),
         },
         theme: ThemeData(
           // This is the theme of your application.
