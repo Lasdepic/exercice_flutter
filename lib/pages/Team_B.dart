@@ -12,22 +12,6 @@ class MyTeamB extends StatefulWidget {
 }
 
 class _MyTeamBState extends State<MyTeamB> {
-  List teamB = [];
-  bool loading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    loadUser();
-  }
-
-  Future loadUser() async {
-    teamB = await PlayerUser().filterTeamB();
-    setState(() {
-      loading = false;
-    });
-  }
-
   Widget build(BuildContext context) {
     final viewModel = Provider.of<PlayerUser>(context);
     return Scaffold(
@@ -58,9 +42,15 @@ class _MyTeamBState extends State<MyTeamB> {
               },
             ),
             ListTile(
-              title: Text('My Score'),
+              title: Text('Score'),
               onTap: () {
                 Navigator.pushNamed(context, '/MyScore');
+              },
+            ),
+            ListTile(
+              title: Text('Mercato'),
+              onTap: () {
+                Navigator.pushNamed(context, '/Mercato');
               },
             ),
           ],
@@ -70,9 +60,9 @@ class _MyTeamBState extends State<MyTeamB> {
           ? Center(child: CircularProgressIndicator())
           : Center(
               child: ListView.builder(
-                itemCount: viewModel.team.length,
+                itemCount: viewModel.teamA.length,
                 itemBuilder: (context, index) {
-                  final user = viewModel.team[index];
+                  final user = viewModel.teamA[index];
                   final initials =
                       "${(user.firstName ?? '').isNotEmpty ? user.firstName[0] : ''}${(user.lastName ?? '').isNotEmpty ? user.lastName[0] : ''}"
                           .toUpperCase();
@@ -94,7 +84,13 @@ class _MyTeamBState extends State<MyTeamB> {
                             ),
                       title: Text("${user.firstName} ${user.lastName}"),
                       subtitle: Text(user.email),
-                      trailing: Icon(Icons.chevron_right),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.redAccent),
+                        tooltip: 'Supprimer',
+                        onPressed: () {
+                          viewModel.deletePlayer(index, "B");
+                        },
+                      ),
                       onTap: () {
                         Navigator.push(
                           context,

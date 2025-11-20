@@ -41,9 +41,15 @@ class _MyScoreState extends State<MyScore> {
               },
             ),
             ListTile(
-              title: Text('My Score'),
+              title: Text('Score'),
               onTap: () {
                 Navigator.pushNamed(context, '/MyScore');
+              },
+            ),
+            ListTile(
+              title: Text('Mercato'),
+              onTap: () {
+                Navigator.pushNamed(context, '/Mercato');
               },
             ),
           ],
